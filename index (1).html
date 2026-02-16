@@ -1,0 +1,1345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ramana Avula | Data Architect & Technical Lead</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0a0e27;
+            --accent: #00d4ff;
+            --secondary: #ff6b35;
+            --success: #00ff88;
+            --text: #e8e8e8;
+            --text-dim: #a0a0a0;
+            --bg-gradient: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0f1428 100%);
+        }
+
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--bg-gradient);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Animated background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: 0;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.15;
+            z-index: 0;
+            animation: float 15s ease-in-out infinite;
+        }
+
+        .orb1 {
+            width: 400px;
+            height: 400px;
+            background: var(--accent);
+            top: -200px;
+            right: -100px;
+        }
+
+        .orb2 {
+            width: 350px;
+            height: 350px;
+            background: var(--secondary);
+            bottom: -150px;
+            left: -100px;
+            animation-delay: 5s;
+        }
+
+        .orb3 {
+            width: 300px;
+            height: 300px;
+            background: var(--success);
+            top: 50%;
+            left: 50%;
+            animation-delay: 10s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(50px, -50px) scale(1.1); }
+            66% { transform: translate(-30px, 30px) scale(0.9); }
+        }
+
+        .cursor-follower {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--accent);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transition: all 0.1s ease;
+            opacity: 0.5;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .scroll-indicator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--secondary));
+            z-index: 9999;
+            transition: width 0.1s ease;
+        }
+
+        /* Header */
+        header {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 2rem 0;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            width: 100%;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .label {
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            font-weight: 600;
+            display: inline-block;
+            border: 1px solid var(--accent);
+            padding: 0.5rem 1rem;
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 5px var(--accent), 0 0 10px var(--accent); }
+            50% { box-shadow: 0 0 10px var(--accent), 0 0 20px var(--accent); }
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--text) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            font-size: clamp(1rem, 2.5vw, 1.5rem);
+            color: var(--text-dim);
+            margin-bottom: 2.5rem;
+            max-width: 800px;
+            font-weight: 400;
+        }
+
+        .quick-intro {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin: 3rem 0;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            max-width: 1200px;
+        }
+
+        .quick-intro::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .quick-intro:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+            box-shadow: 0 10px 40px rgba(0, 212, 255, 0.2);
+        }
+
+        .intro-header {
+            display: flex;
+            gap: 3rem;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .intro-text {
+            flex: 1;
+        }
+
+        .quick-intro h2 {
+            font-size: 1.3rem;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 700;
+        }
+
+        .quick-intro p {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            margin-bottom: 0;
+            color: var(--text);
+        }
+
+        .logo-container {
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .profile-logo {
+            width: 180px;
+            height: 180px;
+            filter: drop-shadow(0 0 20px rgba(0, 212, 255, 0.3));
+            animation: float-logo 6s ease-in-out infinite;
+        }
+
+        @keyframes float-logo {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(5deg); }
+        }
+
+        .logo-text {
+            text-align: center;
+        }
+
+        .logo-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 0.3rem;
+        }
+
+        .logo-title {
+            font-size: 0.85rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        @media (max-width: 968px) {
+            .intro-header {
+                flex-direction: column;
+                text-align: left;
+            }
+
+            .logo-container {
+                align-items: flex-start;
+            }
+
+            .profile-logo {
+                width: 150px;
+                height: 150px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .intro-header {
+                gap: 2rem;
+            }
+
+            .profile-logo {
+                width: 120px;
+                height: 120px;
+            }
+        }
+
+        /* Social Cards */
+        .social-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .social-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 2px solid transparent;
+            border-radius: 16px;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        .social-card.linkedin {
+            border-color: rgba(0, 119, 181, 0.3);
+        }
+
+        .social-card.linkedin:hover {
+            border-color: #0077b5;
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 60px rgba(0, 119, 181, 0.3);
+        }
+
+        .social-card.github {
+            border-color: rgba(36, 41, 46, 0.5);
+        }
+
+        .social-card.github:hover {
+            border-color: #fff;
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 60px rgba(255, 255, 255, 0.2);
+        }
+
+        .social-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .social-icon {
+            width: 60px;
+            height: 60px;
+            flex-shrink: 0;
+            transition: transform 0.3s ease;
+        }
+
+        .social-card:hover .social-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .social-icon.linkedin {
+            fill: #0077b5;
+            filter: drop-shadow(0 4px 12px rgba(0, 119, 181, 0.4));
+        }
+
+        .social-icon.github {
+            fill: #fff;
+            filter: drop-shadow(0 4px 12px rgba(255, 255, 255, 0.3));
+        }
+
+        .social-info h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .social-handle {
+            font-size: 0.9rem;
+            color: var(--text-dim);
+        }
+
+        .social-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 1rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .stat-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: scale(1.05);
+        }
+
+        .stat-number {
+            display: block;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--accent);
+            font-family: 'Playfair Display', serif;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+        }
+
+        .social-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            margin-top: 1.5rem;
+            padding: 0.8rem 1.5rem;
+            background: transparent;
+            color: var(--text);
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .linkedin .social-link {
+            border-color: #0077b5;
+        }
+
+        .linkedin .social-link:hover {
+            background: #0077b5;
+            transform: translateX(5px);
+        }
+
+        .github .social-link {
+            border-color: #fff;
+        }
+
+        .github .social-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+        }
+
+        /* Stats */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 4rem 0;
+            max-width: 1200px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 12px;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--secondary));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: var(--accent);
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.08) 0%, rgba(0, 212, 255, 0.03) 100%);
+            box-shadow: 0 10px 40px rgba(0, 212, 255, 0.2);
+        }
+
+        .stat-card .stat-number {
+            font-size: 2.8rem;
+            margin-bottom: 0.8rem;
+            display: block;
+        }
+
+        .stat-card .stat-label {
+            font-size: 0.9rem;
+            letter-spacing: 0.05em;
+        }
+
+        /* Section */
+        .section {
+            margin: 4rem 0;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 2rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), transparent);
+        }
+
+        /* Skills Grid */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .skill-category {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(0, 212, 255, 0.1);
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .skill-category:hover {
+            border-color: var(--accent);
+            background: rgba(0, 212, 255, 0.03);
+            transform: translateY(-5px);
+        }
+
+        .skill-category h3 {
+            font-size: 1rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .skill-tag {
+            background: rgba(0, 212, 255, 0.1);
+            color: var(--text);
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .skill-tag:hover {
+            background: rgba(0, 212, 255, 0.2);
+            border-color: var(--accent);
+            transform: translateY(-2px) scale(1.05);
+        }
+
+        /* Projects */
+        .projects-grid {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .project-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(0, 212, 255, 0.15);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--accent), var(--secondary));
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .project-card:hover::before {
+            transform: scaleY(1);
+        }
+
+        .project-card:hover {
+            border-color: var(--accent);
+            transform: translateX(10px);
+            box-shadow: 0 10px 40px rgba(0, 212, 255, 0.2);
+        }
+
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+        }
+
+        .project-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+
+        .project-role {
+            font-size: 1rem;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .project-client {
+            font-size: 0.9rem;
+            color: var(--secondary);
+        }
+
+        .project-period {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+        }
+
+        .project-description {
+            color: var(--text-dim);
+            margin-bottom: 1rem;
+            line-height: 1.8;
+        }
+
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .tech-tag {
+            background: rgba(255, 107, 53, 0.1);
+            color: var(--secondary);
+            padding: 0.3rem 0.7rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            border: 1px solid rgba(255, 107, 53, 0.2);
+        }
+
+        .achievements {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.08) 0%, rgba(0, 212, 255, 0.05) 100%);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .achievements::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--success), var(--accent));
+        }
+
+        .achievements h3 {
+            color: var(--success);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .achievements h3::before {
+            content: '⚡';
+            font-size: 2rem;
+        }
+
+        .achievements ul {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            gap: 1rem;
+        }
+
+        .achievements li {
+            padding: 1rem 1.5rem;
+            padding-left: 3rem;
+            position: relative;
+            background: rgba(0, 255, 136, 0.03);
+            border-radius: 8px;
+            border-left: 3px solid var(--success);
+            transition: all 0.3s ease;
+            line-height: 1.6;
+        }
+
+        .achievements li:hover {
+            background: rgba(0, 255, 136, 0.08);
+            transform: translateX(5px);
+            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.15);
+        }
+
+        .achievements li::before {
+            content: '✓';
+            position: absolute;
+            left: 1rem;
+            color: var(--success);
+            font-weight: bold;
+            font-size: 1.2rem;
+            background: rgba(0, 255, 136, 0.15);
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Contact */
+        .contact-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .contact-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 1rem 2rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--accent);
+            border-radius: 8px;
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .contact-link:hover {
+            background: rgba(0, 212, 255, 0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.2);
+        }
+
+        .icon {
+            width: 20px;
+            height: 20px;
+            fill: var(--accent);
+        }
+
+        footer {
+            text-align: center;
+            padding: 3rem 0;
+            border-top: 1px solid rgba(0, 212, 255, 0.1);
+            margin-top: 4rem;
+            color: var(--text-dim);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1.5rem;
+            }
+            .stats {
+                grid-template-columns: 1fr 1fr;
+            }
+            .social-cards {
+                grid-template-columns: 1fr;
+            }
+            .cursor-follower {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="scroll-indicator" id="scrollIndicator"></div>
+    <div class="cursor-follower" id="cursorFollower"></div>
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div class="orb orb3"></div>
+
+    <div class="container">
+        <header>
+            <div class="hero-content">
+                <div class="label">Data Architecture & Cloud Solutions</div>
+                <h1>Ramana Avula</h1>
+                <p class="subtitle">Data Architect | Technical Lead | 10+ Years Transforming Data into Strategic Insights</p>
+
+                <div class="quick-intro">
+                    <div class="intro-header">
+                        <div class="intro-text">
+                            <h2>// Profile Summary</h2>
+                            <p><strong>10+ years of experience</strong> as a Data Architect designing scalable data lake architectures and leading cloud migrations across <strong>Azure, AWS, and Snowflake</strong> ecosystems.</p>
+                            <p style="margin-top: 1rem;">Expert in building robust <strong>ETL/ELT pipelines</strong>, implementing data governance frameworks, and delivering actionable analytics that drive business growth. Proven track record of leading <strong>cross-functional teams of 20+ professionals</strong> across insurance, healthcare, retail, and education domains.</p>
+                            <p style="margin-top: 1rem;">Passionate about <strong>transforming complex data challenges into strategic opportunities</strong> through innovative cloud-native solutions and modern data architecture patterns.</p>
+                        </div>
+                        <div class="logo-container">
+                            <svg class="profile-logo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                                <!-- Outer hexagon -->
+                                <polygon points="100,10 173,55 173,145 100,190 27,145 27,55" fill="none" stroke="url(#grad1)" stroke-width="3"/>
+                                
+                                <!-- Middle hexagon -->
+                                <polygon points="100,30 158,65 158,135 100,170 42,135 42,65" fill="url(#grad2)" opacity="0.2"/>
+                                
+                                <!-- Inner data symbol -->
+                                <circle cx="100" cy="70" r="8" fill="#00d4ff"/>
+                                <circle cx="70" cy="100" r="8" fill="#00d4ff"/>
+                                <circle cx="130" cy="100" r="8" fill="#00d4ff"/>
+                                <circle cx="85" cy="130" r="8" fill="#00d4ff"/>
+                                <circle cx="115" cy="130" r="8" fill="#00d4ff"/>
+                                
+                                <!-- Connecting lines -->
+                                <line x1="100" y1="70" x2="70" y2="100" stroke="#00d4ff" stroke-width="2" opacity="0.6"/>
+                                <line x1="100" y1="70" x2="130" y2="100" stroke="#00d4ff" stroke-width="2" opacity="0.6"/>
+                                <line x1="70" y1="100" x2="85" y2="130" stroke="#00d4ff" stroke-width="2" opacity="0.6"/>
+                                <line x1="130" y1="100" x2="115" y2="130" stroke="#00d4ff" stroke-width="2" opacity="0.6"/>
+                                <line x1="85" y1="130" x2="115" y2="130" stroke="#00d4ff" stroke-width="2" opacity="0.6"/>
+                                
+                                <!-- Initials -->
+                                <text x="100" y="110" font-family="'Playfair Display', serif" font-size="32" font-weight="900" fill="#00d4ff" text-anchor="middle">RA</text>
+                                
+                                <!-- Gradients -->
+                                <defs>
+                                    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#00d4ff;stop-opacity:1" />
+                                        <stop offset="100%" style="stop-color:#ff6b35;stop-opacity:1" />
+                                    </linearGradient>
+                                    <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#00d4ff;stop-opacity:0.3" />
+                                        <stop offset="100%" style="stop-color:#00ff88;stop-opacity:0.3" />
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                            <div class="logo-text">
+                                <div class="logo-name">Ramana Avula</div>
+                                <div class="logo-title">Data Architect</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Social Cards -->
+                <div class="social-cards">
+                    <div class="social-card linkedin">
+                        <div class="social-header">
+                            <svg class="social-icon linkedin" viewBox="0 0 24 24">
+                                <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/>
+                            </svg>
+                            <div class="social-info">
+                                <h3>LinkedIn</h3>
+                                <p class="social-handle">@ramana-avula</p>
+                            </div>
+                        </div>
+                        <div class="social-stats">
+                            <div class="stat-item">
+                                <span class="stat-number">500+</span>
+                                <span class="stat-label">Connections</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">1.3K+</span>
+                                <span class="stat-label">Followers</span>
+                            </div>
+                        </div>
+                        <a href="https://www.linkedin.com/in/ramana-avula" target="_blank" class="social-link">View Profile →</a>
+                    </div>
+
+                    <div class="social-card github">
+                        <div class="social-header">
+                            <svg class="social-icon github" viewBox="0 0 24 24">
+                                <path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/>
+                            </svg>
+                            <div class="social-info">
+                                <h3>GitHub</h3>
+                                <p class="social-handle">@Ramana-Data</p>
+                            </div>
+                        </div>
+                        <div class="social-stats">
+                            <div class="stat-item">
+                                <span class="stat-number">5+</span>
+                                <span class="stat-label">Repositories</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">Active</span>
+                                <span class="stat-label">Contributor</span>
+                            </div>
+                        </div>
+                        <a href="https://github.com/Ramana-Data" target="_blank" class="social-link">View Profile →</a>
+                    </div>
+                </div>
+
+                <div class="stats">
+                    <div class="stat-card">
+                        <span class="stat-number">10+</span>
+                        <span class="stat-label">Years Experience</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">20+</span>
+                        <span class="stat-label">Team Members Led</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">3</span>
+                        <span class="stat-label">Major Cloud Platforms</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">6</span>
+                        <span class="stat-label">Major Projects Delivered</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">500+</span>
+                        <span class="stat-label">LinkedIn Network</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Key Achievements -->
+        <section class="section">
+            <h2 class="section-title">Key Achievements</h2>
+            <div class="achievements">
+                <h3>Career Highlights</h3>
+                <ul>
+                    <li>Architected Data Modern Solutions, enabling seamless integration of diverse datasets across Azure, AWS, and Snowflake platforms</li>
+                    <li>Led Projects end-to-end and Delivered Successfully across insurance, retail, healthcare, and corporate analytics domains</li>
+                    <li>Successfully led teams of 20+ professionals, ensuring timely delivery of complex data architecture projects</li>
+                    <li>Implemented medallion architecture (Bronze, Silver, Gold layers) to streamline data pipelines and enable real-time analytics</li>
+                    <li>Reduced query latency by 25% through optimized Snowflake schema design and data warehouse architecture</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Core Skills -->
+        <section class="section">
+            <h2 class="section-title">Technical Expertise</h2>
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <h3>Cloud Platforms</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Azure Data Factory</span>
+                        <span class="skill-tag">Azure Synapse Analytics</span>
+                        <span class="skill-tag">ADLS Gen2</span>
+                        <span class="skill-tag">Azure Databricks</span>
+                        <span class="skill-tag">AWS Glue</span>
+                        <span class="skill-tag">AWS S3</span>
+                        <span class="skill-tag">AWS Redshift</span>
+                        <span class="skill-tag">Snowflake</span>
+                    </div>
+                </div>
+
+                <div class="skill-category">
+                    <h3>Data Architecture</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Data Lake Design</span>
+                        <span class="skill-tag">Delta Lake</span>
+                        <span class="skill-tag">Medallion Architecture</span>
+                        <span class="skill-tag">Data Migration</span>
+                        <span class="skill-tag">ETL/ELT Pipelines</span>
+                        <span class="skill-tag">Data Modeling</span>
+                    </div>
+                </div>
+
+                <div class="skill-category">
+                    <h3>ETL/ELT Tools</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Azure Data Factory</span>
+                        <span class="skill-tag">AWS Glue</span>
+                        <span class="skill-tag">Informatica</span>
+                        <span class="skill-tag">Cdata Sync</span>
+                        <span class="skill-tag">DBT Core</span>
+                        <span class="skill-tag">Snowflake Pipes</span>
+                        <span class="skill-tag">Spark</span>
+                    </div>
+                </div>
+
+                <div class="skill-category">
+                    <h3>Programming & Frameworks</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">SQL</span>
+                        <span class="skill-tag">Spark SQL</span>
+                        <span class="skill-tag">PySpark</span>
+                        <span class="skill-tag">Python</span>
+                        <span class="skill-tag">DBT Core</span>
+                    </div>
+                </div>
+
+                <div class="skill-category">
+                    <h3>Data Governance & Quality</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">AWS IAM</span>
+                        <span class="skill-tag">AWS CloudWatch</span>
+                        <span class="skill-tag">Unity Catalog</span>
+                        <span class="skill-tag">New Relic</span>
+                        <span class="skill-tag">Data Quality Frameworks</span>
+                        <span class="skill-tag">Anomaly Detection</span>
+                    </div>
+                </div>
+
+                <div class="skill-category">
+                    <h3>Visualization & BI</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Power BI</span>
+                        <span class="skill-tag">Amazon QuickSight</span>
+                        <span class="skill-tag">Tableau</span>
+                    </div>
+                </div>
+
+                <div class="skill-category">
+                    <h3>Version Control & DevOps</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Azure DevOps</span>
+                        <span class="skill-tag">GitHub</span>
+                        <span class="skill-tag">CI/CD Pipelines</span>
+                    </div>
+                </div>
+
+                <div class="skill-category">
+                    <h3>Databases</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">SQL Server</span>
+                        <span class="skill-tag">Azure SQL</span>
+                        <span class="skill-tag">MySQL</span>
+                        <span class="skill-tag">Oracle</span>
+                        <span class="skill-tag">Cosmos DB</span>
+                        <span class="skill-tag">Snowflake</span>
+                        <span class="skill-tag">Redshift</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Major Projects -->
+        <section class="section">
+            <h2 class="section-title">Major Projects</h2>
+            <div class="projects-grid">
+                <!-- Project 1 -->
+                <div class="project-card">
+                    <div class="project-header">
+                        <div>
+                            <h3 class="project-title">Data Model Modernization</h3>
+                            <p class="project-role">Data Architect</p>
+                            <p class="project-client">Client: New York Life Insurance, KS</p>
+                        </div>
+                        <div class="project-period">01/2023 - Present</div>
+                    </div>
+                    <p class="project-description">
+                        Designed and revamped existing AWS data infrastructure to enhance agility, scalability, real-time data processing, and self-service analytics. Architected modern data models leveraging AWS S3, AWS Glue, AWS Redshift, and DBT Core.
+                    </p>
+                    <ul class="project-description">
+                        <li>• Implemented medallion architecture (Bronze, Silver, Gold layers) for streamlined data pipelines</li>
+                        <li>• Developed self-service analytics platforms using Amazon QuickSight and Tableau</li>
+                        <li>• Enhanced data governance using AWS IAM, CloudWatch, and New Relic</li>
+                        <li>• Repointed Tableau Reports from Aurora RDS to Redshift using DBT Core</li>
+                    </ul>
+                    <div class="project-tech">
+                        <span class="tech-tag">AWS S3</span>
+                        <span class="tech-tag">AWS Glue</span>
+                        <span class="tech-tag">AWS Redshift</span>
+                        <span class="tech-tag">DBT Core</span>
+                        <span class="tech-tag">QuickSight</span>
+                        <span class="tech-tag">Tableau</span>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="project-card">
+                    <div class="project-header">
+                        <div>
+                            <h3 class="project-title">Enterprise Data Warehouse</h3>
+                            <p class="project-role">Technical Lead</p>
+                            <p class="project-client">Client: American Public Education, Inc</p>
+                        </div>
+                        <div class="project-period">01/2024 - 03/2025</div>
+                    </div>
+                    <p class="project-description">
+                        Led comprehensive migration of on-premises data infrastructure to Snowflake, ensuring minimal downtime and data integrity. Achieved 25% query latency reduction through optimized Snowflake schemas.
+                    </p>
+                    <ul class="project-description">
+                        <li>• Executed end-to-end migration plan with risk mitigation strategies</li>
+                        <li>• Configured Snowflake data loading mechanisms (Snow Pipe, bulk loading)</li>
+                        <li>• Designed optimized schemas for efficient querying and reporting</li>
+                        <li>• Provided comprehensive training and ongoing support for stakeholders</li>
+                    </ul>
+                    <div class="project-tech">
+                        <span class="tech-tag">Snowflake</span>
+                        <span class="tech-tag">Snow Pipe</span>
+                        <span class="tech-tag">Cdata Sync</span>
+                        <span class="tech-tag">ADF</span>
+                        <span class="tech-tag">SQL Server</span>
+                        <span class="tech-tag">MySQL</span>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="project-card">
+                    <div class="project-header">
+                        <div>
+                            <h3 class="project-title">Cloud Data Warehouse</h3>
+                            <p class="project-role">Technical Lead</p>
+                            <p class="project-client">Client: Protective Insurance</p>
+                        </div>
+                        <div class="project-period">01/2023 - 07/2024</div>
+                    </div>
+                    <p class="project-description">
+                        Led migration of on-premises data infrastructure to Azure Cloud. Architected end-to-end data solutions using Azure Data Lake, Synapse Analytics, ADF, and Databricks.
+                    </p>
+                    <ul class="project-description">
+                        <li>• Designed modern data lake architectures with Delta Lake</li>
+                        <li>• Implemented data governance using Unity Catalog and Log Analytics</li>
+                        <li>• Built PySpark notebooks for multi-domain data processing (Policy, Claims, Reinsurance)</li>
+                        <li>• Spearheaded Generative AI-powered platforms for ad hoc analytics</li>
+                        <li>• Managed team of 10 consultants and 5 senior consultants</li>
+                    </ul>
+                    <div class="project-tech">
+                        <span class="tech-tag">Azure Data Lake</span>
+                        <span class="tech-tag">Azure Synapse</span>
+                        <span class="tech-tag">Azure Data Factory</span>
+                        <span class="tech-tag">Databricks</span>
+                        <span class="tech-tag">PySpark</span>
+                        <span class="tech-tag">Cosmos DB</span>
+                    </div>
+                </div>
+
+                <!-- Project 4 -->
+                <div class="project-card">
+                    <div class="project-header">
+                        <div>
+                            <h3 class="project-title">ORMB Data Integration</h3>
+                            <p class="project-role">Senior Software Engineer</p>
+                            <p class="project-client">Client: Anthem, Inc (Carelon Global Solutions)</p>
+                        </div>
+                        <div class="project-period">02/2020 - 11/2021</div>
+                    </div>
+                    <p class="project-description">
+                        Developed end-to-end data integration solution extracting data from ORMB application and loading into ODS for business reporting and downstream applications.
+                    </p>
+                    <ul class="project-description">
+                        <li>• Extracted data using complex SQL queries from Oracle and flat files</li>
+                        <li>• Developed mappings for staging to DataMart, Dimensions, and Facts</li>
+                        <li>• Created cloud data integration mappings with cloud connectors</li>
+                        <li>• Worked with Oracle, ADLS Gen2, SQL Server, and flat files</li>
+                    </ul>
+                    <div class="project-tech">
+                        <span class="tech-tag">Oracle</span>
+                        <span class="tech-tag">ADLS Gen2</span>
+                        <span class="tech-tag">SQL Server</span>
+                        <span class="tech-tag">Informatica</span>
+                        <span class="tech-tag">ETL</span>
+                    </div>
+                </div>
+
+                <!-- Project 5 -->
+                <div class="project-card">
+                    <div class="project-header">
+                        <div>
+                            <h3 class="project-title">BlackLine Integration</h3>
+                            <p class="project-role">Software Engineer</p>
+                            <p class="project-client">Client: Voya (VFISLK Software Services)</p>
+                        </div>
+                        <div class="project-period">11/2019 - 02/2020</div>
+                    </div>
+                    <p class="project-description">
+                        Developed comprehensive ETL solution with SCD implementation and historical data maintenance.
+                    </p>
+                    <ul class="project-description">
+                        <li>• Developed mappings for Extraction, Transformation, and historical loading</li>
+                        <li>• Implemented SCD Type 1 and 2 for history maintenance</li>
+                        <li>• Utilized Filter, Router, Expression, Lookup, and Joiner transformations</li>
+                        <li>• Used MD5 hashing for data comparison and history tracking</li>
+                    </ul>
+                    <div class="project-tech">
+                        <span class="tech-tag">Informatica PowerCenter</span>
+                        <span class="tech-tag">ETL</span>
+                        <span class="tech-tag">SCD</span>
+                        <span class="tech-tag">SQL</span>
+                    </div>
+                </div>
+
+                <!-- Project 6 -->
+                <div class="project-card">
+                    <div class="project-header">
+                        <div>
+                            <h3 class="project-title">Credit Lifecycle Management</h3>
+                            <p class="project-role">Software Engineer</p>
+                            <p class="project-client">Client: M&T Bank (SLK Software Services)</p>
+                        </div>
+                        <div class="project-period">09/2016 - 11/2019</div>
+                    </div>
+                    <p class="project-description">
+                        Developed end-to-end data integration solution using Informatica, Salesforce, and nCino for credit lifecycle management.
+                    </p>
+                    <ul class="project-description">
+                        <li>• Extracted data from flat files, COBOL files, and SQL Server into Oracle</li>
+                        <li>• Processed active loans with delta record capturing</li>
+                        <li>• Applied business logic for nCino integration</li>
+                        <li>• Maintained near real-time sync between nCino and downstream systems</li>
+                        <li>• Conducted unit testing and data validation using TOAD</li>
+                    </ul>
+                    <div class="project-tech">
+                        <span class="tech-tag">Informatica</span>
+                        <span class="tech-tag">Salesforce</span>
+                        <span class="tech-tag">nCino</span>
+                        <span class="tech-tag">Oracle</span>
+                        <span class="tech-tag">SQL Server</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Certifications -->
+        <section class="section">
+            <h2 class="section-title">Certifications</h2>
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <h3>Azure Certifications</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Azure Data Engineer - Udemy</span>
+                        <span class="skill-tag">Azure Data Factory - Coursera</span>
+                        <span class="skill-tag">Azure SQL Querying</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>AWS Certifications</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">AWS Solutions Architect - Udemy</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>Snowflake</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Snowflake Pro - Udemy</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>Database & SQL</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">SQL Fundamentals</span>
+                        <span class="skill-tag">Advanced Querying</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact -->
+        <section class="section">
+            <h2 class="section-title">Let's Connect</h2>
+            <div class="contact-links">
+                <a href="/cdn-cgi/l/email-protection#184a7975797679596e6d74792a282a2d587f75797174367b7775" class="contact-link">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                    </svg>
+                    <span class="__cf_email__" data-cfemail="f5a79498949b94b483809994c7c5c7c0b59298949c99db969a98">[email&#160;protected]</span>
+                </a>
+                <a href="https://www.linkedin.com/in/ramana-avula" target="_blank" class="contact-link">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/>
+                    </svg>
+                    LinkedIn Profile
+                </a>
+                <a href="tel:3179937157" class="contact-link">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+                    </svg>
+                    (317) 993-7157
+                </a>
+                <a href="https://github.com/Ramana-Data" target="_blank" class="contact-link">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/>
+                    </svg>
+                    GitHub Profile
+                </a>
+            </div>
+        </section>
+
+        <footer>
+            <p>© 2026 Ramana Avula. Data Architect & Technical Lead | Overland Park, Kansas</p>
+            <p style="margin-top: 0.5rem; font-size: 0.85rem;">10+ Years of Experience in Cloud Data Architecture & Analytics</p>
+        </footer>
+    </div>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+        // Scroll indicator
+        window.addEventListener('scroll', () => {
+            const scrollIndicator = document.getElementById('scrollIndicator');
+            const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollPercentage = (window.scrollY / scrollHeight) * 100;
+            scrollIndicator.style.width = scrollPercentage + '%';
+        });
+
+        // Cursor follower
+        const cursorFollower = document.getElementById('cursorFollower');
+        document.addEventListener('mousemove', (e) => {
+            cursorFollower.style.left = e.clientX + 'px';
+            cursorFollower.style.top = e.clientY + 'px';
+        });
+
+        // Interactive hover effects
+        const interactiveElements = document.querySelectorAll('.stat-card, .skill-tag, .social-card, .contact-link, .project-card');
+        interactiveElements.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursorFollower.style.transform = 'scale(2)';
+                cursorFollower.style.borderColor = '#ff6b3
